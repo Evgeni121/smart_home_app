@@ -14,49 +14,49 @@ kv_bottom_navigation = '''
     _no_ripple_effect: True
                 
 <MainScreen>:
-    # MDBottomNavigation:
-    #     panel_color: "orange"
-    #     elevation: 4
-    #     # selected_color_background: "orange"
-    #     text_color_active: "black"
-    #     text_color_normal: "grey"
-    # 
-    #     MDBottomNavigationItem:
-    #         name: 'screen 1'
-    #         text: 'Home'
-    #         icon: 'home'
-    #         # badge_icon: "alert"
-    # 
-    #         MDLabel:
-    #             text: 'Home'
-    #             halign: 'center'
-    # 
-    #     MDBottomNavigationItem:
-    #         name: 'screen 2'
-    #         text: 'Devices'
-    #         icon: 'devices'
-    # 
-    #         MDLabel:
-    #             text: 'Devices'
-    #             halign: 'center'
-    # 
-    #     MDBottomNavigationItem:
-    #         name: 'screen 3'
-    #         text: 'Settings'
-    #         icon: 'table-settings'
-    # 
-    #         MDLabel:
-    #             text: 'Settings'
-    #             halign: 'center'
-    #             
-    #     MDBottomNavigationItem:
-    #         name: 'screen 4'
-    #         text: 'History'
-    #         icon: 'history'
-    # 
-    #         MDLabel:
-    #             text: 'History'
-    #             halign: 'center'
+    MDBottomNavigation:
+        panel_color: "orange"
+        elevation: 4
+        # selected_color_background: "orange"
+        text_color_active: "black"
+        text_color_normal: "grey"
+
+        MDBottomNavigationItem:
+            name: 'screen 1'
+            text: 'Home'
+            icon: 'home'
+            # badge_icon: "alert"
+
+            MDLabel:
+                text: 'Home'
+                halign: 'center'
+
+        MDBottomNavigationItem:
+            name: 'screen 2'
+            text: 'Devices'
+            icon: 'devices'
+
+            MDLabel:
+                text: 'Devices'
+                halign: 'center'
+
+        MDBottomNavigationItem:
+            name: 'screen 3'
+            text: 'Settings'
+            icon: 'table-settings'
+
+            MDLabel:
+                text: 'Settings'
+                halign: 'center'
+
+        MDBottomNavigationItem:
+            name: 'screen 4'
+            text: 'History'
+            icon: 'history'
+
+            MDLabel:
+                text: 'History'
+                halign: 'center'
                 
     MDNavigationLayout:
 
