@@ -1,10 +1,9 @@
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
-
 from kivymd.app import MDApp
 
 from authorization import kv_authorization, AuthorizationScreen
-from bottom_navigation import kv_bottom_navigation, MainWindow
+from bottom_navigation import kv_bottom_navigation, MainScreen
 
 
 Builder.load_string(kv_authorization + kv_bottom_navigation)
@@ -20,7 +19,7 @@ class MyApp(MDApp):
 
     def build(self):
         sm.add_widget(AuthorizationScreen(name='authorization'))
-        sm.add_widget(MainWindow(name='main_window'))
+        sm.add_widget(MainScreen(name='main_window'))
         sm.current = 'authorization'
         return sm
 

@@ -1,10 +1,10 @@
-from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
+
 from kivymd.uix.scrollview import MDScrollView
 
 
 kv_bottom_navigation = '''
-<DrawerClickableItem@MDNavigationDrawerItem>
+<DrawerClickableItem@MDNavigationDrawerItem>:
     focus_color: "#e7e4c0"
     text_color: "#4a4939"
     icon_color: "#4a4939"
@@ -13,7 +13,7 @@ kv_bottom_navigation = '''
     focus_behavior: False
     _no_ripple_effect: True
                 
-<MainWindow>:
+<MainScreen>:
     MDBottomNavigation:
         panel_color: "lightgrey"
         # selected_color_background: "orange"
@@ -114,9 +114,8 @@ kv_bottom_navigation = '''
 
 
 class ContentNavigationDrawer(MDScrollView):
-    screen_manager = ObjectProperty()
-    nav_drawer = ObjectProperty()
+    pass
 
 
-class MainWindow(Screen):
+class MainScreen(Screen):
     pass

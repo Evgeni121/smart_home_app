@@ -1,7 +1,6 @@
-from kivy.properties import StringProperty
-from kivymd.uix.relativelayout import MDRelativeLayout
 from kivy.uix.screenmanager import Screen
 
+from kivymd.uix.relativelayout import MDRelativeLayout
 
 kv_authorization = '''                   
 <ClickableTextFieldRound>:
@@ -24,16 +23,15 @@ kv_authorization = '''
         on_release:
             self.icon = "eye" if self.icon == "eye-off" else "eye-off"
             text_field.password = False if text_field.password is True else True
-            self.theme_text_color = "Primary" if self.theme_text_color == "Hint" else "Hint"
 
 <CheckboxText>:
     height: checkbox.height
-
+    size_hint_y: None
+    
     MDCheckbox:
         id: checkbox
         size_hint: None, None
         size: "48dp", "48dp"
-        pos_hint: {'center_y': .5}
         on_active: 
             text_button.theme_text_color = "Hint" if self.active is False else "Primary"
             app.rememder_password(*args)
@@ -73,9 +71,9 @@ kv_authorization = '''
 
         MDTextField:
             id: mail
+            validator: "email"
             hint_text: "Email"
             helper_text: "user@mail.ru"
-            validator: "email"
             pos_hint: {"center_x": .5, "center_y": .60}
             size_hint_x: .8
             icon_left: "email"
@@ -96,10 +94,9 @@ kv_authorization = '''
             halign: "center"
             valign: "center"
             size_hint_x: .7
-            size_hint_y: .07
             pos_hint: {"center_x": .5, "center_y": .3}
-            on_release: app.log_in(*args)
-            on_press:
+            on_release: 
+                app.log_in(*args)
                 root.manager.transition.direction = 'left'
                 root.manager.current = 'main_window'
 
@@ -112,13 +109,6 @@ kv_authorization = '''
             pos_hint: {"center_x": .5, "center_y": .22}
             on_release: app.forgot_password(*args)
 
-        MDLabel:
-            text: "2023"
-            halign: "center"
-            font_style: "Caption"
-            theme_text_color: "Hint"
-            pos_hint: {"center_y": .05} 
-
         MDFlatButton:
             id: button_sign_up
             text: "Sign Up"
@@ -127,6 +117,13 @@ kv_authorization = '''
             text_color: "orange"
             pos_hint: {"center_x": .5, "center_y": .14}
             on_release: app.sign_up(*args)   
+        
+        MDLabel:
+            text: "2023"
+            halign: "center"
+            font_style: "Caption"
+            theme_text_color: "Hint"
+            pos_hint: {"center_y": .05} 
 '''
 
 
@@ -135,7 +132,8 @@ class AuthorizationScreen(Screen):
 
 
 class ClickableTextFieldRound(MDRelativeLayout):
-    ...
+    pass
+
 
 class CheckboxText(MDRelativeLayout):
-    ...
+    pass
