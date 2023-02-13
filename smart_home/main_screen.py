@@ -60,17 +60,13 @@ kv_bottom_navigation = '''
                 
     MDNavigationLayout:
 
-        MDScreenManager:
-
-            MDScreen:
-
-                MDTopAppBar:
-                    title: "Smart Home"
-                    pos_hint: {"top": 1}
-                    md_bg_color: "orange"
-                    specific_text_color: "#4a4939"
-                    left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-                    right_action_items: [["exit-to-app", lambda x: app.exit_answer(), "Exit"]]
+        MDTopAppBar:
+            title: "Smart Home"
+            pos_hint: {"top": 1}
+            md_bg_color: "orange"
+            specific_text_color: "#4a4939"
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+            right_action_items: [["exit-to-app", lambda x: app.exit_answer(), "Exit"]]
 
     MDNavigationDrawer:
         id: nav_drawer

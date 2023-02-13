@@ -45,6 +45,7 @@ class MyApp(MDApp):
         sm.transition.direction = 'right'
         sm.current = 'authorization'
         print("Exit")
+        self.dialog_close()
 
     dialog = None
 
@@ -58,7 +59,7 @@ class MyApp(MDApp):
                         text="NO",
                         theme_text_color="Custom",
                         text_color=self.theme_cls.primary_color,
-                        # on_release=lambda x: self.dialog.close(),
+                        on_release=self.dialog_close,
                     ),
                     MDFlatButton(
                         text="YES",
@@ -69,6 +70,9 @@ class MyApp(MDApp):
                 ],
             )
         self.dialog.open()
+
+    def dialog_close(self, *args):
+        self.dialog.dismiss(force=True)
 
 
 MyApp().run()
