@@ -10,10 +10,9 @@ kv_authorization = '''
 
     MDTextField:
         id: text_field
-        helper_text: "Password is wrong"
         helper_text_mode: "on_error"
         hint_text: "Password"
-        text: root.text
+        helper_text: "Password is wrong"
         password: True
         icon_left: "key-variant"
 
@@ -25,9 +24,10 @@ kv_authorization = '''
         on_release:
             self.icon = "eye" if self.icon == "eye-off" else "eye-off"
             text_field.password = False if text_field.password is True else True
+            self.theme_text_color = "Primary" if self.theme_text_color == "Hint" else "Hint"
 
 <CheckboxText>:
-    height: text_button.height
+    height: checkbox.height
 
     MDCheckbox:
         id: checkbox
@@ -135,14 +135,7 @@ class AuthorizationScreen(Screen):
 
 
 class ClickableTextFieldRound(MDRelativeLayout):
-    text = StringProperty()
-    hint_text = StringProperty()
-    # Here specify the required parameters for MDTextFieldRound:
-    # [...]
-
+    ...
 
 class CheckboxText(MDRelativeLayout):
-    text = StringProperty()
-    hint_text = StringProperty()
-    # Here specify the required parameters for MDTextFieldRound:
-    # [...]
+    ...

@@ -1,19 +1,24 @@
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
+
 from kivymd.app import MDApp
+
 from authorization import kv_authorization, AuthorizationScreen
 from bottom_navigation import kv_bottom_navigation, MainWindow
+
+
+Builder.load_string(kv_authorization + kv_bottom_navigation)
+
+sm = ScreenManager()
 
 
 class MyApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.screen = Builder.load_string(kv_authorization + kv_bottom_navigation)
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Orange"
 
     def build(self):
-        sm = ScreenManager()
         sm.add_widget(AuthorizationScreen(name='authorization'))
         sm.add_widget(MainWindow(name='main_window'))
         sm.current = 'authorization'
@@ -35,8 +40,8 @@ class MyApp(MDApp):
         print(f"Sign Up {button_sign_up}")
 
     def exit(self):
-        # manager.transition.direction = 'left'
-        # manager.current = 'authorization'
+        sm.transition.direction = 'right'
+        sm.current = 'authorization'
         print(f"Exit")
 
 
