@@ -1,9 +1,12 @@
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
-from kivymd.app import MDApp
 
-from authorization import kv_authorization, AuthorizationScreen
-from bottom_navigation import kv_bottom_navigation, MainScreen
+from kivymd.app import MDApp
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
+
+from authorization_screen import kv_authorization, AuthorizationScreen
+from main_screen import kv_bottom_navigation, MainScreen
 
 
 Builder.load_string(kv_authorization + kv_bottom_navigation)
@@ -38,10 +41,34 @@ class MyApp(MDApp):
     def sign_up(self, button_sign_up):
         print(f"Sign Up {button_sign_up}")
 
-    def exit(self):
+    def app_exit(self):
         sm.transition.direction = 'right'
         sm.current = 'authorization'
-        print(f"Exit")
+        print("Exit")
+
+    dialog = None
+
+    def exit_answer(self):
+        if not self.dialog:
+            self.dialog = MDDialog(
+                title="Are you sure?",
+                text="Do you want to go out?",
+                buttons=[
+                    MDFlatButton(
+                        text="NO",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
+                        # on_release=lambda x: self.dialog.close(),
+                    ),
+                    MDFlatButton(
+                        text="YES",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
+                        on_release=lambda x: self.app_exit(),
+                    ),
+                ],
+            )
+        self.dialog.open()
 
 
 MyApp().run()

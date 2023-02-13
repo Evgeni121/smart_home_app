@@ -53,7 +53,7 @@ kv_authorization = '''
 
         MDLabel:
             id:main_label
-            text: "Smart Home App"
+            text: "Smart Home"
             halign: "center"
             font_style: "H5"
             theme_text_color: "Custom"
