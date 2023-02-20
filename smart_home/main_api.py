@@ -15,11 +15,6 @@ from smart_home.api.classes.user_cls import User
 from smart_home.api.user_api import get_user, get_user_homes, insert_user, update_user, delete_user
 
 
-def create_device(name: str, model: str, device_category: int, device_type: int):
-    device = Device(device_name=name,
-                    device_model=model,
-                    device_category=device_category,
-                    device_type=device_type)
-    insert_device(device)
-    device = get_device(device_name=name, device_model=model)[0]
-    return device
+def create_device(**kwargs):
+    insert_device(**kwargs)
+    return get_device(device_name=kwargs["name"], device_model=kwargs["model"])

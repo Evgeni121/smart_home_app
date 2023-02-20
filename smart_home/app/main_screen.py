@@ -1,5 +1,4 @@
 from kivy.uix.screenmanager import Screen
-from kivy.properties import StringProperty
 
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import IRightBodyTouch, ILeftBodyTouch, OneLineIconListItem
@@ -40,20 +39,31 @@ kv_bottom_navigation = '''
     orientation: "vertical"
     spacing: "10dp"
     size_hint_y: None
-    adaptive_height: True
-
-    MDTextField:
-        id: name
-        helper_text_mode: "on_error"
-        pos_y: 0.9
-        hint_text: "Name"
-        helper_text: "Name cannot be empty"
-
-    MDTextField:
-        id: model
-        pos_hint_y: 0.1
-        hint_text: "Model"   
+    # adaptive_height: True
+    size_y: 0.7
+    
+    MDScrollView: 
+        MDList:
+            MDTextField:
+                id: name
+                hint_text: "Name"
+                helper_text_mode: "on_error"
+                helper_text: "Name cannot be empty"
+        
+            MDTextField:
+                id: model
+                hint_text: "Model"
+                helper_text_mode: "on_error"
+                helper_text: "Model cannot be empty"
+                
+            MDTextField:
+                id: type
+                hint_text: "Type"
             
+            MDTextField:
+                id: category
+                hint_text: "Category"
+        
 <DeviceSettings>:
     orientation: "vertical"
     spacing: "10dp"
@@ -91,9 +101,8 @@ kv_bottom_navigation = '''
     
                 IconLeftWidget:
                     icon: 'devices'
-    
-            
-<MainScreen>: 
+
+<Bottom>:    
     MDBottomNavigation:
         id: bottom_navigation
         panel_color: "orange"
@@ -173,7 +182,25 @@ kv_bottom_navigation = '''
             MDLabel:
                 text: 'History'
                 halign: 'center'
+
+<Home>:
+    MDLabel:
+        text: 'Home'
+        halign: 'center'
+                           
+<MainScreen>:
                 
+    ScreenManager:
+        id: home_main
+        
+        Home:
+            id: home 
+            name: "Home"
+            
+        Bottom:
+            id: bottom
+            name: "Settings"
+    
     MDNavigationLayout:
 
         MDTopAppBar:
@@ -192,9 +219,10 @@ kv_bottom_navigation = '''
         MDNavigationDrawerMenu:
 
             MDNavigationDrawerHeader:
+                id: home_name
                 title: "My Home"
                 title_color: "#4a4939"
-                text: "Account"
+                text: home_main.current
                 spacing: "4dp"
                 padding: "12dp", 0, 0, "56dp"
 
@@ -202,35 +230,43 @@ kv_bottom_navigation = '''
                 text: "Menu"
 
             DrawerClickableItem:
-                icon: "gmail"
-                right_text: "5"
-                text_right_color: "green"
-                text_color: "green"
-                text: "Messages"
+                icon: "home"
+                text_color: "black"
+                text: "Home"
+                on_release: 
+                    home_main.current = "Home"
+                    nav_drawer.set_state("close")
 
             DrawerClickableItem:
-                icon: "account-alert"
-                right_text: "5"
-                text_right_color: "red"
-                text_color: "red"
-                text: "Warnings"
-
+                icon: "format-list-group-plus"
+                text_color: "black"
+                text: "Settings"
+                on_release: 
+                    home_main.current = "Settings"
+                    nav_drawer.set_state("close")
+            
             MDNavigationDrawerDivider:
+            
+            DrawerClickableItem:
+                icon: "home"
+                text_color: "black"
+                text: "My homes"
+                on_release: 
+                    app.home_list()
+                    nav_drawer.set_state("close")
 
-            MDNavigationDrawerLabel:
-                text: "Labels"
-                
-            MDNavigationDrawerLabel:
-                icon: "information-outline"
-                text: "Label"
-    
-            MDNavigationDrawerLabel:
-                icon: "information-outline"
-                text: "Label" 
 '''
 
 
 class MainScreen(Screen):
+    pass
+
+
+class Bottom(Screen):
+    pass
+
+
+class Home(Screen):
     pass
 
 

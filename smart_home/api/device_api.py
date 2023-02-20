@@ -17,13 +17,11 @@ def get_device(**kwargs):
     return devices
 
 
-def insert_device(device: Device):
-    return insert_device_database_sql(device_name=device.name,
-                                      device_model=device.model,
-                                      device_category=device.category,
-                                      device_type=device.type,
-                                      device_interface=device.interface,
-                                      device_ip=device.device_ip)
+def insert_device(**kwargs):
+    return insert_device_database_sql(device_name=kwargs["name"],
+                                      device_model=kwargs["model"],
+                                      device_category=kwargs["category"],
+                                      device_type=kwargs["type"])
 
 
 def update_device(device: Device):

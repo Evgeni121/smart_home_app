@@ -30,6 +30,7 @@ class MyApp(MDApp):
         self.users_remember_password = api.get_user(users_remember_password=1)
         self.devices = api.get_device()
         self.dialog = None
+        self.home = None
 
     def build(self):
         screen_1 = AuthorizationScreen(name='authorization_screen')
@@ -60,9 +61,11 @@ class MyApp(MDApp):
                 text=device.name,
                 secondary_text=device.model,
                 id=f"{device.device_id}")
-            sm.screens[1].ids.container.add_widget(line)
+            sm.screens[1].ids.bottom.ids.container.add_widget(line)
         if self.user_authorized:
             self.home_list()
+        a = sm.screens[1].ids.nav_drawer
+        b = a
 
     def log_in(self, email, password):
         remember_password = sm.screens[0].ids.checkbox.ids.checkbox.active
@@ -90,8 +93,12 @@ class MyApp(MDApp):
                 print(f"Invalid Mail!")
 
     def home_data_load(self, home_name):
+        while len(sm.screens[1].ids.bottom.ids.home_page.children) != 0:
+            sm.screens[1].ids.bottom.ids.home_page.remove_widget(sm.screens[1].ids.bottom.ids.home_page.children[0])
         home = api.get_home_devices(self.user_authorized.homes[home_name])
         home.rooms = api.get_wholly_home(home)
+        self.home = home
+        sm.screens[1].ids.home_name.title = home.name
         if home.rooms:
             for room in home.rooms:
                 room_devices = RoomDevices()
@@ -103,7 +110,7 @@ class MyApp(MDApp):
                         )
                     )
 
-                sm.screens[1].ids.home_page.add_widget(
+                sm.screens[1].ids.bottom.ids.home_page.add_widget(
                     MDExpansionPanel(
                         icon=os.path.join(images_path, "logo", "kivymd-icon-128.png"),
                         content=room_devices,
@@ -156,8 +163,8 @@ class MyApp(MDApp):
         sm.transition.direction = 'right'
         sm.current = 'authorization_screen'
         print("Exit")
-        while len(sm.screens[1].ids.home_page.children) != 0:
-            sm.screens[1].ids.home_page.remove_widget(sm.screens[1].ids.home_page.children[0])
+        while len(sm.screens[1].ids.bottom.ids.home_page.children) != 0:
+            sm.screens[1].ids.bottom.ids.home_page.remove_widget(sm.screens[1].ids.bottom.ids.home_page.children[0])
         self.dialog_close()
         return sm
 
@@ -177,13 +184,13 @@ class MyApp(MDApp):
                 MDRaisedButton(
                     text="ADD",
                     theme_text_color="Hint",
-                    on_release=lambda x: self.add_device(),
+                    on_release=lambda x: self.add_device(self.dialog.content_cls),
                 ),
             ],
         )
         self.dialog.open()
 
-    def add_device(self):
+    def add_device(self, cls):
         name = self.dialog.content_cls.ids.name.text
         model = self.dialog.content_cls.ids.model.text
         device_category = 1
@@ -191,7 +198,7 @@ class MyApp(MDApp):
         if not name:
             self.dialog.content_cls.ids.name.error = True
         else:
-            device = api.create_device(name, model, device_category, device_type)
+            device = api.create_device(name=name, model=model, device_category=device_category, device_type=device_type)
             self.devices.append(device)
             line = TwoLineAvatarIconListItem(
                 RightRaisedButton(
