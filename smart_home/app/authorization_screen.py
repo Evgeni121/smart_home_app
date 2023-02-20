@@ -1,30 +1,65 @@
 from kivy.uix.screenmanager import Screen
+from kivy.properties import StringProperty
 
 from kivymd.uix.relativelayout import MDRelativeLayout
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.list import OneLineIconListItem
 
-kv_authorization = '''                   
-<ClickableTextFieldRound>:
+kv_authorization = '''   
+<MailLine>:
+    IconLeftWidget:
+        icon: root.icon
+        
+<DialogList>:
+    orientation: "vertical"
+    spacing: "5dp"
     size_hint_y: None
-    height: text_field.height
-
+    adaptive_height: True
+        
+<MailField>:
+    size_hint_y: None
+    height: mail_text_field.height
+    text: mail_text_field.text
+    
+    MDTextField
+        id: mail_text_field
+        helper_text_mode: "on_error"
+        # validator: "email"
+        hint_text: "Email"
+        helper_text: "user@mail.ru"
+        icon_left: "email"
+        # on_release: app.mail_list()
+        
+    MDDropDownItem:
+        theme_text_color: "Hint"
+        pos_hint: {'center_y': .5}
+        pos: mail_text_field.width - self.width,0
+        on_release: app.mail_list()
+                                    
+<PasswordField>:
+    size_hint_y: None
+    height: password_text_field.height
+    text: password_text_field.text
+    
     MDTextField:
-        id: text_field
+        id: password_text_field
         helper_text_mode: "on_error"
         hint_text: "Password"
         helper_text: "Password is wrong"
         password: True
+        error: False
         icon_left: "key-variant"
 
     MDIconButton:
         icon: "eye-off"
         pos_hint: {"center_y": .5}
-        pos: text_field.width - self.width + dp(8), 0
+        pos: password_text_field.width - self.width + dp(8), 0
         theme_text_color: "Hint"
         on_release:
             self.icon = "eye" if self.icon == "eye-off" else "eye-off"
-            text_field.password = False if text_field.password is True else True
+            password_text_field.password = False if password_text_field.password is True else True
 
-<CheckboxText>:
+<RememderPasswordCheckbox>:
     height: checkbox.height
     size_hint_y: None
     
@@ -34,7 +69,6 @@ kv_authorization = '''
         size: "48dp", "48dp"
         on_active: 
             text_button.theme_text_color = "Hint" if self.active is False else "Primary"
-            app.rememder_password(*args)
 
     MDTextButton:
         id: text_button
@@ -46,13 +80,13 @@ kv_authorization = '''
         on_release:
             checkbox.active = False if checkbox.active is True else True
 
-<AuthorizationScreen>:
+<AuthorizationScreen>:    
     MDScreen:
+        id: authorization
         radius: [400, 0, 400, 0]
         md_bg_color: "#f6eeee"
 
         MDLabel:
-            id:main_label
             text: "Smart Home"
             halign: "center"
             font_style: "H5"
@@ -64,44 +98,35 @@ kv_authorization = '''
             radius: 24
             box_radius: [0, 0, 0, 0]
             box_color: 0, 0, 0, 0
-            source: "data/imgs/smart_home.png"
+            source: "app/data/imgs/smart_home.png"
             pos_hint: {"center_x": .5, "center_y": .77}
             size_hint: None, None
             size: "150dp", "150dp"
 
-        MDTextField:
-            id: mail
-            validator: "email"
-            hint_text: "Email"
-            helper_text: "user@mail.ru"
-            pos_hint: {"center_x": .5, "center_y": .60}
+        MailField:
+            id: mail_field
             size_hint_x: .8
-            icon_left: "email"
+            pos_hint: {"center_x": .5, "center_y": .6}
 
-        ClickableTextFieldRound:
+        PasswordField:
+            id: password_field
             size_hint_x: .8
-            pos_hint: {"center_x": .5, "center_y": .50}
+            pos_hint: {"center_x": .5, "center_y": .5}
 
-        CheckboxText:
-            pos_hint: {"center_x": .57, "center_y": .42}
+        RememderPasswordCheckbox:
+            id: checkbox
+            pos_hint: {"center_x": .57, "center_y": .41}
 
         MDRaisedButton:
-            id: log_in_button
             text: "Log In"
             font_style: "H6"
             theme_text_color: "Hint"
             md_bg_color: "orange"
-            halign: "center"
-            valign: "center"
             size_hint_x: .7
             pos_hint: {"center_x": .5, "center_y": .3}
-            on_release: 
-                app.log_in(*args)
-                root.manager.transition.direction = 'left'
-                root.manager.current = 'main_window'
+            on_release: app.log_in(mail_field.text, password_field.text)
 
         MDTextButton:
-            id: button_forgot_password
             text: "Forgot password?"
             theme_text_color: "Custom"
             text_color: "green"
@@ -110,7 +135,6 @@ kv_authorization = '''
             on_release: app.forgot_password(*args)
 
         MDFlatButton:
-            id: button_sign_up
             text: "Sign Up"
             font_style: "H6"
             theme_text_color: "Custom"
@@ -131,9 +155,21 @@ class AuthorizationScreen(Screen):
     pass
 
 
-class ClickableTextFieldRound(MDRelativeLayout):
+class MailField(MDRelativeLayout):
     pass
 
 
-class CheckboxText(MDRelativeLayout):
+class PasswordField(MDRelativeLayout):
     pass
+
+
+class RememderPasswordCheckbox(MDRelativeLayout):
+    pass
+
+
+class DialogList(MDBoxLayout):
+    pass
+
+
+class MailLine(OneLineIconListItem):
+    icon = StringProperty()
