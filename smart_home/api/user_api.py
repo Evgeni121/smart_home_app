@@ -31,9 +31,10 @@ def get_user_homes(**kwargs):
                     status=user_from_db[5],
                     user_home_active_id=user_from_db[6])
         for home in users_from_db:
-            user.homes[home[8]] = Home(user=user,
-                                       name=home[8],
-                                       home_id=home[7])
+            if home[8] and home[7]:
+                user.homes[home[8]] = Home(user=user,
+                                           name=home[8],
+                                           home_id=home[7])
     return user
 
 

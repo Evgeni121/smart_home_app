@@ -1,7 +1,7 @@
 from kivy.uix.screenmanager import Screen
 
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import IRightBodyTouch, ILeftBodyTouch, OneLineIconListItem
+from kivymd.uix.list import IRightBodyTouch, ILeftBodyTouch
 from kivymd.uix.relativelayout import MDRelativeLayout
 
 kv_bottom_navigation = '''
@@ -13,7 +13,12 @@ kv_bottom_navigation = '''
     selected_color: "orange"
     focus_behavior: True
     _no_ripple_effect: True
-    
+
+<MySwiper@MDSwiperItem>
+    FitImage:
+        source: "app/data/imgs/123.jpg"
+        radius: [20,]
+
 <CheckboxTextAdd>:
     height: checkbox_add.height
     size_hint_y: None
@@ -36,33 +41,46 @@ kv_bottom_navigation = '''
             checkbox_add.active = False if checkbox_add.active is True else True
             
 <DeviceAdd>:
+    id: device_add
     orientation: "vertical"
     spacing: "10dp"
     size_hint_y: None
-    # adaptive_height: True
     size_y: 0.7
+    height: dp(200)
     
     MDScrollView: 
         MDList:
             MDTextField:
+                id: category
+                text_color_normal: "black"
+                hint_text: "Category"
+                helper_text_mode: "on_error"
+                helper_text: "Select necessary category"
+                on_focus: 
+                    if self.focus: app.open_list(self)
+            
+            MDTextField:
+                id: type
+                text_color_normal: "black"
+                hint_text: "Type"
+                helper_text_mode: "on_error"
+                helper_text: "Select necessary type"
+                on_focus: 
+                    if self.focus: app.open_list(self)
+                      
+            MDTextField:
                 id: name
+                text_color_normal: "black"
                 hint_text: "Name"
                 helper_text_mode: "on_error"
                 helper_text: "Name cannot be empty"
         
             MDTextField:
                 id: model
+                text_color_normal: "black"
                 hint_text: "Model"
                 helper_text_mode: "on_error"
                 helper_text: "Model cannot be empty"
-                
-            MDTextField:
-                id: type
-                hint_text: "Type"
-            
-            MDTextField:
-                id: category
-                hint_text: "Category"
         
 <DeviceSettings>:
     orientation: "vertical"
@@ -93,7 +111,6 @@ kv_bottom_navigation = '''
         MDList:
             id: room_devices
             cols: 1
-            adaptive_height: True
                 
             TwoLineIconListItem:
                 text: "List of devices"
@@ -102,7 +119,29 @@ kv_bottom_navigation = '''
                 IconLeftWidget:
                     icon: 'devices'
 
-<Bottom>:    
+<Home>:
+    
+    MDSwiper:
+        size_hint_y: None
+        height: root.height - dp(150)
+        y: root.height - self.height - dp(75)
+    
+        MySwiper:
+        
+        MySwiper:
+
+        MySwiper:
+
+    MDBottomAppBar:
+
+        MDTopAppBar:
+            icon: "plus"
+            type: "bottom"
+            on_action_button: print("Add new widget")
+            mode: "free-end"  
+            
+<Bottom>: 
+    
     MDBottomNavigation:
         id: bottom_navigation
         panel_color: "orange"
@@ -110,11 +149,11 @@ kv_bottom_navigation = '''
         text_color_normal: "#4a4939"
 
         MDBottomNavigationItem:
-            name: 'screen 1'
+            name: 'screen_1'
             text: 'Home'
             icon: 'home'
             # badge_icon: "alert"
-            
+                        
             MDBoxLayout:
                 orientation: 'vertical'
                 spacing: dp(5)
@@ -129,7 +168,7 @@ kv_bottom_navigation = '''
                         adaptive_height: True
 
         MDBottomNavigationItem:
-            name: 'screen 2'
+            name: 'screen_2'
             text: 'Devices'
             icon: 'devices'
             
@@ -139,34 +178,26 @@ kv_bottom_navigation = '''
                 padding: dp(5)
                 pos_hint_y: .5
                 size_hint_y: .9
-        
-                MDBoxLayout:
-                    adaptive_height: True
-                    pos_hint: {"center_x": .5}
-    
-                    MDIconButton:
-                        icon: 'magnify'
-        
-                    MDTextField:
-                        id: search_field
-                        hint_text: 'Search device'
-                        on_text: app.set_list_devices(self.text, True)
                         
                 MDScrollView:
                     MDList:
                         id: container
                 
-            MDRaisedButton:
-                text: "Add device"
-                font_style: "Body2"
-                theme_text_color: "Primary"
-                md_bg_color: "orange"
-                size_hint_x: .2
-                pos_hint: {"center_x": .65, "center_y": .1}
-                on_release: app.add_device_dialog()
+            MDBoxLayout:
+                adaptive_height: True
+                pos_hint: {"center_x": .55, "center_y": .8}
+                size_hint_x: .6
+        
+                MDIconButton:
+                    icon: 'magnify'
+        
+                MDTextField:
+                    id: search_field
+                    hint_text: 'Search device'
+                    on_text: app.set_list_devices(self.text, True)
 
         MDBottomNavigationItem:
-            name: 'screen 3'
+            name: 'screen_3'
             text: 'Settings'
             icon: 'table-settings'
 
@@ -175,18 +206,51 @@ kv_bottom_navigation = '''
                 halign: 'center'
 
         MDBottomNavigationItem:
-            name: 'screen 4'
+            name: 'screen_4'
             text: 'History'
             icon: 'history'
 
             MDLabel:
                 text: 'History'
                 halign: 'center'
+        
+    MDFloatingActionButton:
+        id: round_button
+        icon: "plus"
+        pos_hint: {"center_x": .8, "center_y": .2}
+        on_release: 
+            if bottom_navigation.previous_tab.name == "screen_2": app.add_device_dialog()
+            elif bottom_navigation.previous_tab.name == "screen_1": app.add_room_dialog()
+            elif bottom_navigation.previous_tab.name == "screen_3": print("Add new algorithm")
+            elif bottom_navigation.previous_tab.name == "screen_4": print("Add new parameter")
 
-<Home>:
-    MDLabel:
-        text: 'Home'
-        halign: 'center'
+<Room>:
+        
+    MDBoxLayout:
+        orientation: 'vertical'
+        pos_hint_y: .5
+        size_hint_y: .9  
+                
+        MDScrollView:
+            MDList:
+                id: room_devices
+                                                
+        MDBottomAppBar:
+    
+            MDTopAppBar:
+                icon: "plus"
+                type: "bottom"
+                on_action_button: print("Add room device")
+                mode: "free-end"  
+
+    MDFloatingActionButton:
+        id: round_button
+        adaptive_height: True
+        adaptive_weight: True
+        icon: "arrow-left-bold"
+        pos_hint: {"center_x": .5, "center_y": .1}
+        on_release: 
+            app.change_screen("Settings")                   
                            
 <MainScreen>:
                 
@@ -195,23 +259,31 @@ kv_bottom_navigation = '''
         
         Home:
             id: home 
-            name: "Home"
+            name: "Home Page"
             
         Bottom:
             id: bottom
             name: "Settings"
     
+        Room:
+            id: room
+            name: "Room devices"
+            
     MDNavigationLayout:
 
         MDTopAppBar:
-            title: "Smart Home"
+            id: top_bar
+            title: f"{home_name.title}: {home_main.current}"
             pos_hint: {"top": 1}
             elevation: 2
             md_bg_color: "orange"
             specific_text_color: "#4a4939"
-            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
-            right_action_items: [["exit-to-app", lambda x: app.app_exit_dialog(), "Exit"]]
-                        
+            left_action_items: 
+                [["menu", lambda x: nav_drawer.set_state("open")]]
+            right_action_items: 
+                [["home", lambda x: app.home_list(), "My Homes"],
+                ["exit-to-app", lambda x: app.app_exit_dialog(), "Exit"]]
+            
     MDNavigationDrawer:
         id: nav_drawer
         radius: (0, 10, 10, 0)
@@ -230,11 +302,13 @@ kv_bottom_navigation = '''
                 text: "Menu"
 
             DrawerClickableItem:
+                id: home_page_control
                 icon: "home"
                 text_color: "black"
-                text: "Home"
+                text: "Home Page"
                 on_release: 
-                    home_main.current = "Home"
+                    home_main.transition.direction = 'left'
+                    home_main.current = "Home Page"
                     nav_drawer.set_state("close")
 
             DrawerClickableItem:
@@ -242,19 +316,11 @@ kv_bottom_navigation = '''
                 text_color: "black"
                 text: "Settings"
                 on_release: 
+                    home_main.transition.direction = 'left'
                     home_main.current = "Settings"
                     nav_drawer.set_state("close")
             
             MDNavigationDrawerDivider:
-            
-            DrawerClickableItem:
-                icon: "home"
-                text_color: "black"
-                text: "My homes"
-                on_release: 
-                    app.home_list()
-                    nav_drawer.set_state("close")
-
 '''
 
 
@@ -270,6 +336,14 @@ class Home(Screen):
     pass
 
 
+class Room(Screen):
+    pass
+
+
+class Scr(Screen):
+    pass
+
+
 class DeviceAdd(MDBoxLayout):
     pass
 
@@ -278,8 +352,8 @@ class DeviceSettings(MDBoxLayout):
     pass
 
 
-class RoomDevices(MDBoxLayout):
-    pass
+class RoomDevices(IRightBodyTouch, MDBoxLayout):
+    adaptive_width = True
 
 
 class CheckboxTextAdd(MDRelativeLayout):

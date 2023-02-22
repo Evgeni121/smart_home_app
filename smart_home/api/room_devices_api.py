@@ -16,7 +16,7 @@ def get_room_devices(room: Room):
                                  device_type=room_device[6],
                                  device_interface=room_device[7],
                                  device_ip=room_device[8])
-        room.devices[room_device] = room_device
+        room.devices[room_device.room_device_id] = room_device
     return room
 
 

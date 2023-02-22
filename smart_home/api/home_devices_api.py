@@ -16,7 +16,7 @@ def get_home_devices(home: Home):
                                  device_type=home_device[6],
                                  device_interface=home_device[7],
                                  device_ip=home_device[8])
-        home.devices[home_device] = home_device
+        home.devices[home_device.home_device_id] = home_device
     return home
 
 

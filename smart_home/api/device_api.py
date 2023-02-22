@@ -21,7 +21,9 @@ def insert_device(**kwargs):
     return insert_device_database_sql(device_name=kwargs["name"],
                                       device_model=kwargs["model"],
                                       device_category=kwargs["category"],
-                                      device_type=kwargs["type"])
+                                      device_type=kwargs["type"],
+                                      device_interface=None,
+                                      device_ip=None)
 
 
 def update_device(device: Device):

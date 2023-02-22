@@ -23,6 +23,7 @@ kv_authorization = '''
     
     MDTextField
         id: mail_text_field
+        text_color_normal: "black"
         helper_text_mode: "on_error"
         # validator: "email"
         hint_text: "Email"
@@ -31,7 +32,7 @@ kv_authorization = '''
         # on_release: app.mail_list()
         
     MDDropDownItem:
-        theme_text_color: "Hint"
+        id: drop_down_item
         pos_hint: {'center_y': .5}
         pos: mail_text_field.width - self.width,0
         on_release: app.mail_list()
@@ -43,6 +44,7 @@ kv_authorization = '''
     
     MDTextField:
         id: password_text_field
+        text_color_normal: "black"
         helper_text_mode: "on_error"
         hint_text: "Password"
         helper_text: "Password is wrong"

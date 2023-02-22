@@ -17,4 +17,9 @@ from smart_home.api.user_api import get_user, get_user_homes, insert_user, updat
 
 def create_device(**kwargs):
     insert_device(**kwargs)
-    return get_device(device_name=kwargs["name"], device_model=kwargs["model"])
+    return get_device(device_name=kwargs["name"], device_model=kwargs["model"])[0]
+
+
+def create_room(home: Home, room_name):
+    insert_room(home, room_name)
+    return get_rooms(home, room_name=room_name, home_id=home.home_id)

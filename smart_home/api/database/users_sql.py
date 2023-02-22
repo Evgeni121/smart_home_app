@@ -43,7 +43,7 @@ def get_user_homes_database_sql(**kwargs):
         sql = f"""SELECT *
         FROM 
             users
-            JOIN homes USING (user_id)
+            LEFT JOIN homes USING (user_id)
         WHERE user_status = '{kwargs["user_status"]}'"""
     elif "user_email" in kwargs.keys():
         sql = f"""SELECT *
@@ -121,9 +121,9 @@ def execute_read(sql, name):
 
 create_table_users_sql()
 if not get_user_database_sql():
-    insert_user_database_sql(user_nickname=None, user_email="Smart@mail.ru", user_password="admin",
-                             user_remember_password=1, user_status=0, user_home_active_id=None)
-    insert_user_database_sql(user_nickname=None, user_email="Home@mail.ru", user_password="admin",
-                             user_remember_password=0, user_status=0, user_home_active_id=None)
-    insert_user_database_sql(user_nickname=None, user_email="1234", user_password="1234",
-                             user_remember_password=0, user_status=0, user_home_active_id=None)
+    insert_user_database_sql(user_nickname="", user_email="Smart@mail.ru", user_password="admin",
+                             user_remember_password=1, user_status=1, user_home_active_id=1)
+    insert_user_database_sql(user_nickname="", user_email="Home@mail.ru", user_password="admin",
+                             user_remember_password=0, user_status=0, user_home_active_id=0)
+    insert_user_database_sql(user_nickname="", user_email="1234", user_password="1234",
+                             user_remember_password=0, user_status=0, user_home_active_id=0)

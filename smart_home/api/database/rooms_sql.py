@@ -13,7 +13,7 @@ def create_table_rooms_sql():
         room_name TEXT NOT NULL,
         home_id INTEGER NOT NULL,
         FOREIGN KEY (home_id) REFERENCES homes(home_id),
-        UNIQUE (room_id, home_id)
+        UNIQUE (room_name, home_id)
         );
     """
     execute_write(sql, name)
@@ -21,7 +21,9 @@ def create_table_rooms_sql():
 
 def get_room_database_sql(**kwargs):
     name = "get_room"
-    if "room_id" in kwargs.keys():
+    if "room_name" in kwargs.keys() and "home_id" in kwargs.keys():
+        sql = f"""SELECT * FROM rooms WHERE room_name = '{kwargs["room_name"]}' AND home_id = '{kwargs["home_id"]}'"""
+    elif "room_id" in kwargs.keys():
         sql = f"""SELECT * FROM rooms WHERE room_id = '{kwargs["room_id"]}'"""
     elif "home_id" in kwargs.keys():
         sql = f"""SELECT * FROM rooms WHERE home_id = '{kwargs["home_id"]}'"""

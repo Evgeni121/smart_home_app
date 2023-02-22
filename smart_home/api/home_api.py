@@ -19,21 +19,21 @@ def get_homes(user: User):
 def get_wholly_home(home: Home):
     rooms_from_db = get_wholly_home_database_sql(home_id=home.home_id)
     rooms = {}
-    devices = {}
     for room in rooms_from_db:
         rooms[room[1]] = Room(room_id=room[0],
                               name=room[1],
                               home=home)
     for device in rooms_from_db:
-        rooms[device[1]].devices[device[3]] = RoomDevice(room_device_id=device[3],
-                                                         room_id=device[0],
-                                                         device_id=device[4],
-                                                         device_name=device[5],
-                                                         device_model=device[6],
-                                                         device_category=device[7],
-                                                         device_type=device[8],
-                                                         device_interface=device[9],
-                                                         device_ip=device[10])
+        if device[5] is not None:
+            rooms[device[1]].devices[device[3]] = RoomDevice(room_device_id=device[3],
+                                                             room_id=device[0],
+                                                             device_id=device[4],
+                                                             device_name=device[5],
+                                                             device_model=device[6],
+                                                             device_category=device[7],
+                                                             device_type=device[8],
+                                                             device_interface=device[9],
+                                                             device_ip=device[10])
     return rooms
 
 

@@ -36,8 +36,8 @@ def get_wholly_home_database_sql(home_id):
     SELECT * 
     FROM 
         rooms
-        JOIN room_devices USING (room_id)
-        JOIN devices USING (device_id)
+        LEFT JOIN room_devices USING (room_id)
+        LEFT JOIN devices USING (device_id)
     WHERE home_id = '{home_id}'"""
     return execute_read(sql, name)
 
@@ -99,7 +99,7 @@ def execute_read(sql, name):
 
 create_table_homes_sql()
 if not get_home_database_sql():
-    insert_home_database_sql(home_name="Home_1", user_id=1)
-    insert_home_database_sql(home_name="Home_2", user_id=1)
-    insert_home_database_sql(home_name="Home_1", user_id=2)
+    insert_home_database_sql(home_name="House", user_id=1)
+    insert_home_database_sql(home_name="Apartment", user_id=1)
+    insert_home_database_sql(home_name="Сottage", user_id=2)
 
