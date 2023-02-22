@@ -278,17 +278,6 @@ dev = ["black", "coveralls", "flake8", "isort[pyproject]", "pre-commit", "pyinst
 docs = ["furo", "sphinx", "sphinx-autoapi (==1.4.0)", "sphinx-copybutton", "sphinx-notfound-page", "sphinx-tabs"]
 
 [[package]]
-name = "pgsql"
-version = "1.2"
-description = "PostgreSQL client library for Python 3"
-category = "main"
-optional = false
-python-versions = ">=3"
-files = [
-    {file = "pgsql-1.2.tar.gz", hash = "sha256:b11b86d2b46fcd8cbfa3d11f970ed92d6ee699f825f1aa5d2ea301a6e30f04f6"},
-]
-
-[[package]]
 name = "pillow"
 version = "9.4.0"
 description = "Python Imaging Library (Fork)"
@@ -475,4 +464,4 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a543bbdfbcbcd2e4291559a3210c8257cd65d7d403d31c217ccbc35f7a09f5ac"
+content-hash = "5e6daf11a7ad835f98ba75839579fa748c12a8b232a24a3cdf4e2ab0963a4b8c"

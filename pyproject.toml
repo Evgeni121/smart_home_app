@@ -4,13 +4,12 @@ version = "0.1.0"
 description = ""
 authors = ["Evgeni121 <darevblago121@mail.ru>"]
 readme = "README.md"
-packages = [{include = "my_app"}]
+packages = [{include = "smart_home"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 kivy = "^2.1.0"
 kivymd = "^1.1.1"
-pgsql = "^1.2"
 
 
 [build-system]
