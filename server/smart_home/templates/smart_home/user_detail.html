@@ -1,0 +1,10 @@
+{{ user.email }}
+{% if home_list %}
+    <ul>
+    {% for home in home_list %}
+        <li><a href="{% url 'smart_home:home_detail' user.id home.id %}">{{ home.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No homes are available.</p>
+{% endif %}

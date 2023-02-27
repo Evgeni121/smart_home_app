@@ -1,5 +1,5 @@
-import app.application as app
-import api.api as api
+from app import application as app
+from smart_home import api
 
 app = app.SmartHome(api)
 app.run()
