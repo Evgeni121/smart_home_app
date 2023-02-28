@@ -12,20 +12,22 @@ from smart_home.app.authorization_screen import AuthorizationScreen, DialogList,
 from smart_home.app.main_screen import MainScreen, DeviceAdd, RightRaisedButton, \
     LeftRaiseButton, DeviceSettings, kv_bottom_navigation
 
+from smart_home.app.database import app_api
 Builder.load_string(kv_authorization + kv_bottom_navigation)
 screen_manager = ScreenManager()
 
 
 class SmartHome(MDApp):
-    def __init__(self, api, **kwargs):
+    def __init__(self, server_api, **kwargs):
         super().__init__(**kwargs)
         self.theme_cls.theme_style = "Light"
         self.theme_cls.primary_palette = "Orange"
         self.theme_cls.material_style = "M2"
-        self.user_authorized = api.get_user_homes(user_status=1)
-        self.users_remember_password = api.get_user(users_remember_password=1)
-        self.devices = api.get_device()
-        self.api = api
+        self.user_authorized = app_api.get_user(user_authorized=True)
+        self.users_remember_password = app_api.get_user(users_remember_password=True)
+        self.devices = server_api.get("devices")["results"]
+        self.server_api = server_api
+        self.app_api = app_api
         self.dialog = None
         self.menu = None
         self.user_active_home = None
@@ -43,7 +45,7 @@ class SmartHome(MDApp):
         return screen_manager
 
     def on_start(self):
-        if self.user_authorized and self.user_authorized.user_home_active_id:
+        if self.user_authorized and self.user_authorized.user_home:
             for home in self.user_authorized.homes:
                 if self.user_authorized.homes[home].home_id == self.user_authorized.user_home_active_id:
                     self.home_data_load(self.user_authorized.homes[home].name)
@@ -64,9 +66,9 @@ class SmartHome(MDApp):
                         MDIconButton(icon="cog",
                                      on_release=lambda x: self.settings_dialog(x)
                                      )),
-                    text=available_device.name,
-                    secondary_text=available_device.model,
-                    id=f"{available_device.device_id}"
+                    text=available_device["name"],
+                    secondary_text=available_device["model"],
+                    id=f"{available_device['id']}"
                 )
             )
 
@@ -84,7 +86,7 @@ class SmartHome(MDApp):
     def log_in(self, email, password):
         remember_password = screen_manager.screens[0].ids.checkbox.ids.checkbox.active
         if email:
-            user = self.api.get_user_homes(user_email=email)
+            user = self.server_api.get("users", auth=("admin", "admin"), parameters={"user_email": email})
             if user:
                 if password == user.password:
                     if remember_password and user not in self.users_remember_password:

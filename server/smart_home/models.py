@@ -9,21 +9,21 @@ class Device(models.Model):
         object = 3
 
     class Category(models.IntegerChoices):
-        home_security = 1
-        fire_safety = 2
-        water_supply = 3
-        electricity_supply = 4
-        video_supervision = 5
-        climatization = 6
-        lighting = 7
-        meters = 8
-        alert = 9
-        power = 10
+        Home_security = 1
+        Fire_safety = 2
+        Water_supply = 3
+        Electricity_supply = 4
+        Video_supervision = 5
+        Climatization = 6
+        Lighting = 7
+        Meters = 8
+        Alert = 9
+        Power = 10
 
     class Interface(models.IntegerChoices):
-        wi_fi = 1
-        ethernet = 2
-        rs_485 = 3
+        Wi_Fi = 1
+        Ethernet = 2
+        RS_485 = 3
 
     TYPE = {
         1: "Controller",
@@ -54,7 +54,7 @@ class Device(models.Model):
     model = models.CharField(max_length=50)
     category = models.IntegerField(
         choices=Category.choices,
-        default=Category.home_security,
+        default=Category.Home_security,
     )
     type = models.IntegerField(
         choices=Type.choices,
@@ -62,7 +62,7 @@ class Device(models.Model):
     )
     interface = models.IntegerField(
         choices=Interface.choices,
-        default=Interface.wi_fi,
+        default=Interface.Wi_Fi,
     )
     ip = models.CharField(max_length=50,  default="", blank=True)
 
@@ -74,40 +74,39 @@ class Device(models.Model):
         return f"Device name: {self.name}, Device model: {self.model}"
 
 
+class UserDevice(models.Model):
+    device = models.ForeignKey(Device, on_delete=models.CASCADE)
+    note = models.CharField(max_length=50, default="Usage...")
+
+    class Meta:
+        unique_together = ('note', 'device')
+        ordering = ['device']
+
+
 class Home(models.Model):
     name = models.CharField(max_length=50, default="My home")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    devices = models.ManyToManyField(Device, through='HomeDevice')
+    user_device = models.ForeignKey(UserDevice, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('name', 'user',)
+        unique_together = ('name', 'user', 'user_device')
+        ordering = ['name']
 
     def __str__(self):
         return self.name
-
-
-class HomeDevice(models.Model):
-    home = models.ForeignKey(Home, on_delete=models.CASCADE)
-    device = models.ForeignKey(Device, on_delete=models.CASCADE)
-    description = models.CharField(max_length=50)
 
 
 class Room(models.Model):
     name = models.CharField(max_length=50, default="My room")
     home = models.ForeignKey(Home, on_delete=models.CASCADE)
-    devices = models.ManyToManyField(Device, through='RoomDevice')
+    user_device = models.ForeignKey(UserDevice, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('name', 'home',)
+        unique_together = ('name', 'home', 'user_device')
+        ordering = ['name']
 
     def __str__(self):
         return self.name
-
-
-class RoomDevice(models.Model):
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    device = models.ForeignKey(Device, on_delete=models.CASCADE)
-    description = models.CharField(max_length=50)
 
 
 # device1 = Device(name="123", model="R-12", category=3, type=1)
@@ -120,7 +119,7 @@ class RoomDevice(models.Model):
 # device8 = Device(name="890", model="RB-1232", category=3, type=1)
 # device9 = Device(name="901", model="RD-1212", category=3, type=1)
 # device10 = Device(name="012", model="GR-142", category=3, type=1)
-
+#
 # device1.save()
 # device2.save()
 # device3.save()
@@ -131,4 +130,3 @@ class RoomDevice(models.Model):
 # device8.save()
 # device9.save()
 # device10.save()
-

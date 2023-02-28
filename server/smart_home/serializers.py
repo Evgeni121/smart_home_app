@@ -17,29 +17,22 @@ class DeviceSerializer(serializers.ModelSerializer):
         fields = ['url', 'id', 'name', 'model', 'category', 'type', 'interface', 'ip']
 
 
+class UserDeviceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.UserDevice
+        fields = ['url', 'id', 'device', 'note']
+
+
 class HomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Home
-        fields = ['url', 'id', 'name', 'user', 'devices']
-
-
-class HomeDeviceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = models.HomeDevice
-        fields = ['url', 'id', 'home', 'device', 'description']
+        fields = ['url', 'id', 'name', 'user', 'user_device']
 
 
 class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Room
-        fields = ['url', 'id', 'name', 'home', 'devices']
-
-
-class RoomDeviceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = models.RoomDevice
-        fields = ['url', 'id', 'room', 'device', 'description']
+        fields = ['url', 'id', 'name', 'home', 'user_device']
