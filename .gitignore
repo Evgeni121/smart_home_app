@@ -186,3 +186,4 @@ fabric.properties
 # .idea
 
 server/db.sqlite3
+smart_home/database.db

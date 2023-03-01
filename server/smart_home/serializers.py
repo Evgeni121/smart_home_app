@@ -4,35 +4,58 @@ from . import models
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
         fields = ['url', 'id', 'username', 'email', 'password']
+
+    def create(self, validated_data):
+        user = super().create(validated_data)
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        user = super().update(instance, validated_data)
+        try:
+            user.set_password(validated_data['password'])
+            user.save()
+        except KeyError:
+            pass
+        return user
 
 
 class DeviceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Device
-        fields = ['url', 'id', 'name', 'model', 'category', 'type', 'interface', 'ip']
-
-
-class UserDeviceSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = models.UserDevice
-        fields = ['url', 'id', 'device', 'note']
+        fields = ['url', 'id', 'name', 'model', 'device_category', 'device_type', 'interface', 'ip']
 
 
 class HomeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Home
-        fields = ['url', 'id', 'name', 'user', 'user_device']
+        fields = ['url', 'id', 'name', 'user']
 
 
 class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Room
-        fields = ['url', 'id', 'name', 'home', 'user_device']
+        fields = ['url', 'id', 'name', 'home']
+
+
+class HomeDeviceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.HomeDevice
+        fields = ['url', 'id', 'device', 'note', 'home']
+
+
+class RoomDeviceSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.RoomDevice
+        fields = ['url', 'id', 'device', 'note', 'room']

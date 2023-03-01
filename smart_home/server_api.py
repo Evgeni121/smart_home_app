@@ -11,7 +11,7 @@ def get(object_name, auth=None, parameters=None):
             requests.exceptions.ConnectionError) as error:
         return error
     data = response.json()
-    return data
+    return data.get("results")
 
 
 def post(object_name, auth=None, parameters=None):

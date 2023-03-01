@@ -100,7 +100,7 @@ kv_authorization = '''
             radius: 24
             box_radius: [0, 0, 0, 0]
             box_color: 0, 0, 0, 0
-            source: "app/data/imgs/devices.png"
+            source: "app/data/imgs/smart_home.png"
             pos_hint: {"center_x": .5, "center_y": .77}
             size_hint: None, None
             size: "150dp", "150dp"
