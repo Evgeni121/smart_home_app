@@ -187,3 +187,5 @@ fabric.properties
 
 server/db.sqlite3
 smart_home/database.db
+smart_home/buildozer.spec
+smart_home/app/icons.py

@@ -21,7 +21,7 @@ class UserViewSet(viewsets.ModelViewSet):
             return User.objects.all().order_by('-date_joined')
 
 
-class DeviceViewSet(viewsets.ReadOnlyModelViewSet):
+class DeviceViewSet(viewsets.ModelViewSet):
     queryset = Device.objects.all().order_by('name')
     serializer_class = serializers.DeviceSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -45,18 +45,51 @@ class HomeViewSet(viewsets.ModelViewSet):
 
 
 class RoomViewSet(viewsets.ModelViewSet):
-    queryset = Room.objects.all().order_by('name')
     serializer_class = serializers.RoomSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        query = {}
+        for key in self.request.query_params.keys():
+            query[key] = self.request.query_params.get(key)
+        if self.request.query_params:
+            try:
+                return Room.objects.filter(**query)
+            except Room.DoesNotExist:
+                pass
+        else:
+            return Room.objects.all().order_by('name')
+
 
 class HomeDeviceViewSet(viewsets.ModelViewSet):
-    queryset = HomeDevice.objects.all().order_by('device')
     serializer_class = serializers.HomeDeviceSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        query = {}
+        for key in self.request.query_params.keys():
+            query[key] = self.request.query_params.get(key)
+        if self.request.query_params:
+            try:
+                return HomeDevice.objects.filter(**query)
+            except HomeDevice.DoesNotExist:
+                pass
+        else:
+            return HomeDevice.objects.all().order_by('device')
+
 
 class RoomDeviceViewSet(viewsets.ModelViewSet):
-    queryset = RoomDevice.objects.all().order_by('device')
     serializer_class = serializers.RoomDeviceSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        query = {}
+        for key in self.request.query_params.keys():
+            query[key] = self.request.query_params.get(key)
+        if self.request.query_params:
+            try:
+                return RoomDevice.objects.filter(**query)
+            except RoomDevice.DoesNotExist:
+                pass
+        else:
+            return RoomDevice.objects.all().order_by('device')
