@@ -1,5 +1,4 @@
 import requests
-import json
 
 
 def get(object_name, auth=None, parameters=None):
@@ -11,13 +10,13 @@ def get(object_name, auth=None, parameters=None):
             requests.exceptions.ConnectionError) as error:
         return error
     data = response.json()
-    return data.get("results")
+    return data
 
 
-def post(object_name, auth=None, parameters=None):
+def post(object_name, auth=None, data=None):
     url = f'http://127.0.0.1:8000/api/{object_name}/'
     try:
-        response = requests.post(url, auth=auth, data=parameters, timeout=3)
+        response = requests.post(url, auth=auth, data=data, timeout=3)
     except (
             requests.exceptions.Timeout,
             requests.exceptions.ConnectionError) as error:
@@ -25,10 +24,10 @@ def post(object_name, auth=None, parameters=None):
     return response.json()
 
 
-def put(object_name, object_id, auth=None, parameters=None):
+def put(object_name, object_id, auth=None, data=None):
     url = f'http://127.0.0.1:8000/api/{object_name}/{object_id}/'
     try:
-        response = requests.put(url, auth=auth, json=parameters, verify=False, timeout=3)
+        response = requests.put(url, auth=auth, json=data, verify=False, timeout=3)
     except (
             requests.exceptions.Timeout,
             requests.exceptions.ConnectionError) as error:

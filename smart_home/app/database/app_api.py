@@ -68,8 +68,8 @@ def update_user(user, **kwargs):
                 password=kwargs["password"] if kwargs.get("password") is not None else user.password,
                 user_authorized=kwargs["user_authorized"] if kwargs.get("user_authorized") is not None
                 else user.user_authorized,
-                user_remember_password=kwargs["user_remember_password"] if kwargs.get("user_remember_password")
-                is not None else user.user_remember_password,
+                user_remember_password=kwargs["user_remember_password"]
+                if kwargs.get("user_remember_password") is not None else user.user_remember_password,
                 user_home=kwargs["user_home"] if kwargs.get("user_home") is not None else user.user_home)
     )
     conn = engine.connect()

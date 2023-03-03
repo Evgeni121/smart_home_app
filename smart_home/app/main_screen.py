@@ -1,8 +1,10 @@
 from kivy.uix.screenmanager import Screen
+from kivy.properties import StringProperty
 
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import IRightBodyTouch, ILeftBodyTouch
+from kivymd.uix.list import IRightBodyTouch, ILeftBodyTouch, OneLineRightIconListItem
 from kivymd.uix.relativelayout import MDRelativeLayout
+from kivymd.uix.selectioncontrol import MDSwitch
 
 kv_bottom_navigation = '''
 <DrawerClickableItem@MDNavigationDrawerItem>:
@@ -13,11 +15,25 @@ kv_bottom_navigation = '''
     selected_color: "orange"
     focus_behavior: True
     _no_ripple_effect: True
-
+        
 <MySwiper@MDSwiperItem>
-    FitImage:
-        source: "app/data/imgs/123.jpg"
-        radius: [20,]
+    RelativeLayout:
+    
+        FitImage:
+            source: "app/data/imgs/123.jpg"
+            radius: [20,]
+            
+        MDBoxLayout:
+            adaptive_height: True
+            spacing: "12dp"
+    
+            MDLabel:
+                text: "MDLabel"
+                font_style: "H5"
+                size_hint_y: None
+                height: self.texture_size[1]
+                pos_hint: {"center_y": .5}
+                opposite_colors: True
 
 <CheckboxTextAdd>:
     height: checkbox_add.height
@@ -99,11 +115,20 @@ kv_bottom_navigation = '''
         id: model
         pos_hint_y: 0.1
         hint_text: "Model"   
-    
-    CheckboxTextAdd:
-        id: check
-        pos_hint: {"center_x": .50, "center_y": .40}
 
+<RoomAdd>:
+    orientation: "vertical"
+    spacing: "10dp"
+    size_hint_y: None
+    adaptive_height: True
+
+    MDTextField:
+        id: name
+        helper_text_mode: "on_error"
+        pos_y: 0.9
+        hint_text: "Name"
+        helper_text: "Name cannot be empty"
+        
 <RoomDevices>
     adaptive_height: True
 
@@ -119,6 +144,27 @@ kv_bottom_navigation = '''
                 IconLeftWidget:
                     icon: 'devices'
 
+<LineWithSwitch>:
+    font_style: "H6"
+    theme_text_color: "Custom"
+    text_color: 1, 1, 1, 1
+    
+    RightSwitch:   
+        pos_hint: {"center_y": .5}           
+
+<LineWithSlider>:
+    font_style: "H6"
+    theme_text_color: "Custom"
+    text_color: 1, 1, 1, 1
+                                        
+    MDSlider:   
+        hint: True
+        hint_bg_color: "red"
+        hint_text_color: "white"
+        hint_radius: [6, 0, 6, 0]
+        pos_hint: {"center_y": .5}
+        value: 30
+        
 <Home>:
     
     MDSwiper:
@@ -126,11 +172,88 @@ kv_bottom_navigation = '''
         height: root.height - dp(150)
         y: root.height - self.height - dp(75)
     
-        MySwiper:
-        
-        MySwiper:
+        MDSwiperItem:
+            RelativeLayout:
+    
+                FitImage:
+                    source: "app/data/imgs/123.jpg"
+                    radius: [20,]
+                    
+                MDBoxLayout:
+                    adaptive_height: True
+                    orientation: "vertical"
+                    pos_hint: {"center_x": 0.5, "center_y": .85}
+            
+                    MDLabel:
+                        text: "Home"
+                        font_style: "H5"
+                        opposite_colors: True
+                        halign: "center"
+                 
+                MDBoxLayout:
+                    adaptive_height: True
+                    orientation: "vertical"
+                    pos_hint: {"center_x": 0.5, "center_y": .5}
+                    
+                    MDList:
+                        id: list_screen_home
+                        
+                        LineWithSwitch:
+                            text: "Home Security"
+                        
+                        LineWithSwitch:
+                            text: "Home Door"
+                            
+                        LineWithSwitch:
+                            text: "Outside Light"
+                        
+                        LineWithSwitch:
+                            text: "Temperature"   
+                        
+                            MDSlider:  
+                                adaptive_height: True 
+                                hint: True
+                                hint_bg_color: "red"
+                                hint_text_color: "white"
+                                hint_radius: [6, 0, 6, 0]
+                                pos_hint: {"center_y": .0}
+                                value: 30   
 
-        MySwiper:
+        MDSwiperItem:
+            RelativeLayout:
+    
+                FitImage:
+                    source: "app/data/imgs/123.jpg"
+                    radius: [20,]
+                    
+                MDBoxLayout:
+                    adaptive_height: True
+                    orientation: "vertical"
+                    pos_hint: {"center_x": 0.5, "center_y": .85}
+            
+                    MDLabel:
+                        text: "Room 1"
+                        font_style: "H5"
+                        opposite_colors: True
+                        halign: "center"
+                            
+        MDSwiperItem:
+            RelativeLayout:
+    
+                FitImage:
+                    source: "app/data/imgs/123.jpg"
+                    radius: [20,]
+                    
+                MDBoxLayout:
+                    adaptive_height: True
+                    orientation: "vertical"
+                    pos_hint: {"center_x": 0.5, "center_y": .85}
+            
+                    MDLabel:
+                        text: "Room 2"
+                        font_style: "H5"
+                        opposite_colors: True
+                        halign: "center"
 
     MDBottomAppBar:
 
@@ -178,23 +301,21 @@ kv_bottom_navigation = '''
                 padding: dp(5)
                 pos_hint_y: .5
                 size_hint_y: .9
-                        
+                
+                MDBoxLayout:
+                    adaptive_height: True
+        
+                    MDIconButton:
+                        icon: 'magnify'
+        
+                    MDTextField:
+                        id: search_field
+                        hint_text: 'Search device'
+                        on_text: app.set_list_devices(self.text, True)
+                       
                 MDScrollView:
                     MDList:
                         id: container
-                
-            MDBoxLayout:
-                adaptive_height: True
-                pos_hint: {"center_x": .55, "center_y": .8}
-                size_hint_x: .6
-        
-                MDIconButton:
-                    icon: 'magnify'
-        
-                MDTextField:
-                    id: search_field
-                    hint_text: 'Search device'
-                    on_text: app.set_list_devices(self.text, True)
 
         MDBottomNavigationItem:
             name: 'screen_3'
@@ -220,7 +341,7 @@ kv_bottom_navigation = '''
         pos_hint: {"center_x": .8, "center_y": .2}
         on_release: 
             if bottom_navigation.previous_tab.name == "screen_2": app.add_device_dialog()
-            elif bottom_navigation.previous_tab.name == "screen_1": app.add_room_dialog()
+            elif bottom_navigation.previous_tab.name == "screen_1": app.add_room_dialog("Room")
             elif bottom_navigation.previous_tab.name == "screen_3": print("Add new algorithm")
             elif bottom_navigation.previous_tab.name == "screen_4": print("Add new parameter")
 
@@ -348,6 +469,13 @@ class DeviceAdd(MDBoxLayout):
     pass
 
 
+class RoomAdd(MDBoxLayout):
+    def __init__(self, name, *args):
+        super().__init__(*args)
+        self.my_name = name
+    pass
+
+
 class DeviceSettings(MDBoxLayout):
     pass
 
@@ -366,3 +494,15 @@ class RightRaisedButton(IRightBodyTouch, MDBoxLayout):
 
 class LeftRaiseButton(ILeftBodyTouch, MDBoxLayout):
     adaptive_width = True
+
+
+class LineWithSwitch(OneLineRightIconListItem):
+    icon = StringProperty()
+
+
+class LineWithSlider(OneLineRightIconListItem):
+    icon = StringProperty()
+
+
+class RightSwitch(IRightBodyTouch, MDSwitch):
+    active: False
