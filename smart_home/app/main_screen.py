@@ -61,7 +61,6 @@ kv_bottom_navigation = '''
     orientation: "vertical"
     spacing: "10dp"
     size_hint_y: None
-    size_y: 0.7
     height: dp(200)
     
     MDScrollView: 
@@ -97,7 +96,30 @@ kv_bottom_navigation = '''
                 hint_text: "Model"
                 helper_text_mode: "on_error"
                 helper_text: "Model cannot be empty"
-        
+
+<RoomChoice>:
+    id: device_add
+    orientation: "vertical"
+    spacing: "10dp"
+    size_hint_y: None
+    height: dp(130)
+    
+    MDTextField:
+        id: room
+        text_color_normal: "black"
+        hint_text: "Room"
+        helper_text_mode: "on_error"
+        helper_text: "Select necessary room"
+        on_focus: 
+            if self.focus: app.choice_room_list(self)
+              
+    MDTextField:
+        id: note
+        text_color_normal: "black"
+        hint_text: "Note"
+        helper_text_mode: "on_error"
+        helper_text: "Note cannot be empty"
+                             
 <DeviceSettings>:
     orientation: "vertical"
     spacing: "10dp"
@@ -116,6 +138,32 @@ kv_bottom_navigation = '''
         pos_hint_y: 0.1
         hint_text: "Model"   
 
+<RoomDeviceSettings>:
+    orientation: "vertical"
+    spacing: "10dp"
+    size_hint_y: None
+    adaptive_height: True
+    
+    MDTextField:
+        id: note
+        helper_text_mode: "on_error"
+        pos_y: 0.9
+        hint_text: "Note"
+        helper_text: "Note cannot be empty"
+
+    CheckboxTextAdd:
+        id:checkbox
+
+<DeviceProperties>:
+    orientation: "vertical"
+    spacing: "10dp"
+    size_hint_y: None
+    adaptive_height: True
+
+    MDScrollView: 
+        MDList:
+            id: properties
+   
 <RoomAdd>:
     orientation: "vertical"
     spacing: "10dp"
@@ -150,7 +198,10 @@ kv_bottom_navigation = '''
     text_color: 1, 1, 1, 1
     
     RightSwitch:   
-        pos_hint: {"center_y": .5}           
+        pos_hint: {"center_y": .5}  
+        icon_inactive_color: "grey" 
+        thumb_color_inactive: "lightgrey" 
+        on_active: app.behavior(self)     
 
 <LineWithSlider>:
     font_style: "H6"
@@ -164,6 +215,7 @@ kv_bottom_navigation = '''
         hint_radius: [6, 0, 6, 0]
         pos_hint: {"center_y": .5}
         value: 30
+        on_active: print("!")
         
 <Home>:
     
@@ -361,7 +413,7 @@ kv_bottom_navigation = '''
             MDTopAppBar:
                 icon: "plus"
                 type: "bottom"
-                on_action_button: print("Add room device")
+                on_action_button: print("!")
                 mode: "free-end"  
 
     MDFloatingActionButton:
@@ -413,7 +465,7 @@ kv_bottom_navigation = '''
 
             MDNavigationDrawerHeader:
                 id: home_name
-                title: "My Home"
+                title: "Select or create home!"
                 title_color: "#4a4939"
                 text: home_main.current
                 spacing: "4dp"
@@ -469,6 +521,10 @@ class DeviceAdd(MDBoxLayout):
     pass
 
 
+class RoomChoice(MDBoxLayout):
+    pass
+
+
 class RoomAdd(MDBoxLayout):
     def __init__(self, name, *args):
         super().__init__(*args)
@@ -477,6 +533,14 @@ class RoomAdd(MDBoxLayout):
 
 
 class DeviceSettings(MDBoxLayout):
+    pass
+
+
+class RoomDeviceSettings(MDBoxLayout):
+    pass
+
+
+class DeviceProperties(MDBoxLayout):
     pass
 
 

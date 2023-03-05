@@ -134,7 +134,7 @@ kv_authorization = '''
             text_color: "green"
             font_style: "Body2"
             pos_hint: {"center_x": .5, "center_y": .22}
-            on_release: app.forgot_password(*args)
+            on_release: app.forgot_password()
 
         MDFlatButton:
             text: "Sign Up"
@@ -142,7 +142,7 @@ kv_authorization = '''
             theme_text_color: "Custom"
             text_color: "orange"
             pos_hint: {"center_x": .5, "center_y": .14}
-            on_release: app.sign_up(*args)   
+            on_release: app.sign_up()   
         
         MDLabel:
             text: "2023"
