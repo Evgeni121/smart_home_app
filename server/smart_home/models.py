@@ -74,6 +74,18 @@ class Device(models.Model):
         return f"Device name: {self.name}, Device model: {self.model}"
 
 
+class DeviceProperties(models.Model):
+    device = models.ForeignKey(Device, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, default="Property")
+    input = models.CharField(max_length=50, default=None, blank=True)
+    output = models.CharField(max_length=50, default=None, blank=True)
+    min_value = models.IntegerField(default=0, blank=True)
+    max_value = models.IntegerField(default=0, blank=True)
+
+    class Meta:
+        ordering = ['name']
+
+
 class Home(models.Model):
     name = models.CharField(max_length=50, default="My home")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -100,22 +112,22 @@ class Room(models.Model):
 
 class HomeDevice(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
-    note = models.CharField(max_length=50, default="Usage...")
+    note = models.CharField(max_length=50, default="")
     home = models.ForeignKey(Home, default=None, on_delete=models.NOT_PROVIDED)
 
     class Meta:
         unique_together = ('device', 'note')
-        ordering = ['device']
+        ordering = ['note']
 
 
 class RoomDevice(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
-    note = models.CharField(max_length=50, default="Usage...")
+    note = models.CharField(max_length=50, default="")
     room = models.ForeignKey(Room, default=None, on_delete=models.NOT_PROVIDED)
 
     class Meta:
         unique_together = ('device', 'note')
-        ordering = ['device']
+        ordering = ['note']
 
 
 # device1 = Device(name="123", model="R-12", device_category=3, device_type=1)

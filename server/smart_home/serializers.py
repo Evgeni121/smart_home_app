@@ -33,6 +33,13 @@ class DeviceSerializer(serializers.ModelSerializer):
         fields = ['url', 'id', 'name', 'model', 'device_category', 'device_type', 'interface', 'ip']
 
 
+class DevicePropertiesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = models.DeviceProperties
+        fields = ['url', 'id', 'device', "name", 'input', 'output', 'min_value', 'max_value']
+
+
 class HomeSerializer(serializers.ModelSerializer):
 
     class Meta:

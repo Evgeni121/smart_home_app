@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
 from django.contrib.auth.models import User
-from .models import Device, HomeDevice, RoomDevice, Home, Room
+from .models import Device, HomeDevice, RoomDevice, Home, Room, DeviceProperties
 from . import serializers
 
 
@@ -25,6 +25,23 @@ class DeviceViewSet(viewsets.ModelViewSet):
     queryset = Device.objects.all().order_by('name')
     serializer_class = serializers.DeviceSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class DevicePropertiesViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.DevicePropertiesSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        query = {}
+        for key in self.request.query_params.keys():
+            query[key] = self.request.query_params.get(key)
+        if self.request.query_params:
+            try:
+                return DeviceProperties.objects.filter(**query)
+            except DeviceProperties.DoesNotExist:
+                pass
+        else:
+            return DeviceProperties.objects.all().order_by('device')
 
 
 class HomeViewSet(viewsets.ModelViewSet):
