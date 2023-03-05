@@ -1,0 +1,12 @@
+<p>{{ user.email }}</p>
+<p>{{ home.name }}</p>
+    <ul>
+<li>{{ home.name }} devices</li>
+    {% if room_list %}
+    {% for room in room_list %}
+        <li>{{ room.name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No rooms are available.</p>
+{% endif %}
