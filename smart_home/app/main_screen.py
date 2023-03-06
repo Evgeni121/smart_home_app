@@ -204,10 +204,15 @@ kv_bottom_navigation = '''
         on_active: app.behavior(self)     
 
 <LineWithSlider>:
-    font_style: "H6"
-    theme_text_color: "Custom"
-    text_color: 1, 1, 1, 1
-                                        
+    adaptive_height: True 
+    padding: dp(15)
+    orientation: "horizontal"
+    
+    MDLabel:
+        id: label
+        adaptive_height: True 
+        font_style: "Body1"
+                                      
     MDSlider:   
         hint: True
         hint_bg_color: "red"
@@ -216,6 +221,21 @@ kv_bottom_navigation = '''
         pos_hint: {"center_y": .5}
         value: 30
         on_active: print("!")
+
+<LineWithData>:
+    adaptive_height: True 
+    padding: dp(15)
+    orientation: "horizontal"
+    
+    MDLabel:
+        id: text
+        adaptive_height: True 
+        font_style: "Body1"
+    
+    MDLabel:
+        id: value
+        adaptive_height: True 
+        font_style: "H6"
         
 <Home>:
     
@@ -564,8 +584,12 @@ class LineWithSwitch(OneLineRightIconListItem):
     icon = StringProperty()
 
 
-class LineWithSlider(OneLineRightIconListItem):
-    icon = StringProperty()
+class LineWithSlider(MDBoxLayout):
+    pass
+
+
+class LineWithData(MDBoxLayout):
+    pass
 
 
 class RightSwitch(IRightBodyTouch, MDSwitch):

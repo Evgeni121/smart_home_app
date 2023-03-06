@@ -14,7 +14,7 @@ from kivymd.uix.snackbar import Snackbar
 from smart_home.app.authorization_screen import AuthorizationScreen, DialogList, MailLine, kv_authorization
 from smart_home.app.main_screen import MainScreen, DeviceAdd, RightRaisedButton, \
     LeftRaiseButton, DeviceSettings, kv_bottom_navigation, RoomAdd, RoomChoice, RoomDeviceSettings, \
-    DeviceProperties, LineWithSwitch
+    DeviceProperties, LineWithSwitch, LineWithSlider, LineWithData
 
 from smart_home.app.database import app_api
 
@@ -65,6 +65,7 @@ class SmartHome(MDApp):
         self.driver = driver
         self.dialog = None
         self.dialog_2 = None
+        self.error_dialog = None
         self.menu = None
         self.auth = None
 
@@ -357,14 +358,24 @@ class SmartHome(MDApp):
 
         content = DeviceProperties()
         for device_property in device_properties:
-            content.ids.properties.add_widget(
-                LineWithSwitch(
-                    text=f"{device_property['name']}",
-                    text_color=(0, 0, 0, 1),
-                    font_style="Body1"))
+            if device_property["input"] == "Discrete":
+                content.ids.properties.add_widget(
+                    LineWithSwitch(
+                        text=device_property['name'],
+                        text_color=(0, 0, 0, 1),
+                        font_style="Body1"))
+            elif device_property["input"] == "Analog":
+                line = LineWithSlider()
+                line.ids.label.text = device_property['name']
+                content.ids.properties.add_widget(line)
+            elif device_property["output"] == "Analog":
+                line = LineWithData()
+                line.ids.text.text = device_property['name']
+                line.ids.value.text = "1"
+                content.ids.properties.add_widget(line)
 
         self.dialog = MDDialog(
-            title="Device:",
+            title="Properties:",
             type="custom",
             content_cls=content,
             width_offset=dp(20),
@@ -376,7 +387,8 @@ class SmartHome(MDApp):
                     on_release=self.dialog_close)])
         self.dialog.open()
 
-    def behavior(self, switch):
+    @staticmethod
+    def behavior(switch):
         print(switch.parent.parent.text)
 
     def delete_room_device_dialog(self, widget, room):
@@ -609,6 +621,7 @@ class SmartHome(MDApp):
                 self.app_api.update_user(self.user_authorized, user_home=home["id"])
                 self.user_authorized.user_home = home["id"]
                 self.dialog_close()
+                self.rooms = {}
         except TypeError:
             self.connection_error()
 
@@ -840,17 +853,21 @@ class SmartHome(MDApp):
     def dialog_2_close(self, *args):
         self.dialog_2.dismiss(force=True)
 
+    def error_dialog_close(self, *args):
+        self.error_dialog.dismiss(force=True)
+
     def connection_error(self):
-        self.dialog = MDDialog(
-            title="Connection Error",
-            text="Check Internet Connection!",
-            buttons=[
-                MDFlatButton(
-                    text="OK",
-                    theme_text_color="Custom",
-                    text_color=self.theme_cls.primary_color,
-                    on_release=lambda x: self.dialog_close())])
-        self.dialog.open()
+        if not self.error_dialog:
+            self.error_dialog = MDDialog(
+                title="Connection Error",
+                text="Check Internet Connection!",
+                buttons=[
+                    MDFlatButton(
+                        text="OK",
+                        theme_text_color="Custom",
+                        text_color=self.theme_cls.primary_color,
+                        on_release=lambda x: self.error_dialog_close())])
+            self.error_dialog.open()
 
     @staticmethod
     def change_screen(screen_name):
