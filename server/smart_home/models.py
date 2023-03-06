@@ -83,6 +83,7 @@ class DeviceProperties(models.Model):
     max_value = models.IntegerField(default=0, blank=True)
 
     class Meta:
+        unique_together = ('device', 'name',)
         ordering = ['name']
 
 
