@@ -220,7 +220,7 @@ kv_bottom_navigation = '''
         hint_radius: [6, 0, 6, 0]
         pos_hint: {"center_y": .5}
         value: 30
-        on_active: print("!")
+        on_active: print("Slider")
 
 <LineWithData>:
     adaptive_height: True 

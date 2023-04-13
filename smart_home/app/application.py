@@ -205,13 +205,7 @@ class SmartHome(MDApp):
         self.rooms = {}
         self.room_devices = {}
         screen_manager.screens[1].ids.bottom.ids.home_page.clear_widgets()
-
-        if not self.user_authorized.user_home:
-            try:
-                self.app_api.update_user(self.user_authorized, user_home=home_id)
-            except TypeError:
-                self.connection_error()
-
+        self.app_api.update_user(self.user_authorized, user_home=home_id)
         self.user_authorized.user_home = home_id
         screen_manager.screens[1].ids.home_name.title = self.homes[home_id]["name"]
 
@@ -228,8 +222,7 @@ class SmartHome(MDApp):
             for room in rooms:
                 self.rooms[room["id"]] = room
                 room_devices = self.server_api.get("room_devices",
-                                                   auth=(self.user_authorized.username,
-                                                         self.user_authorized.password),
+                                                   auth=self.auth,
                                                    parameters={"room": room["id"]})
                 self.room_devices[room["id"]] = {room_device["id"]: room_device for room_device in room_devices}
                 screen_manager.screens[1].ids.bottom.ids.home_page.add_widget(
